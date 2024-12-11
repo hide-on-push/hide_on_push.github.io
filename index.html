@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/ >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비트코인 거래 플랫폼 프로젝트</title>
     <style>
         body {
@@ -54,11 +54,6 @@
             background: #fff;
             padding: 20px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            display: none; /* 처음에는 모두 숨기기 */
-        }
-
-        section.active {
-            display: block; /* 활성화된 섹션만 보여주기 */
         }
 
         h2 {
@@ -75,6 +70,11 @@
             text-align: center;
             padding: 20px;
             color: #aaa;
+        }
+
+        /* 간단한 스크롤 스무딩 */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -96,7 +96,7 @@
         </ul>
     </nav>
 
-    <section id="slide1" class="active">
+    <section id="slide1">
         <h2>&lt;Slide&gt; 캔들차트 & 거래량</h2>
         <div class="slide-content">
             자바스크립트 라이브러리인 D3.js를 이용하여 CSV 파일로 받은 종가, 시가, 저가, 고가, 날짜 데이터를 캔들차트로 구현하고 거래량 그래프도 추가하였다. 하지만 이 방식은 실시간으로 데이터가 반영되지 않는 한계가 존재.
@@ -162,29 +162,5 @@
     <footer>
         &copy; 비트코인 거래 플랫폼 프로젝트
     </footer>
-
-    <script>
-        // 모든 섹션을 가져옴
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('nav a');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').replace('#', '');
-                showSection(targetId);
-            });
-        });
-
-        function showSection(id) {
-            sections.forEach(sec => {
-                if (sec.id === id) {
-                    sec.classList.add('active');
-                } else {
-                    sec.classList.remove('active');
-                }
-            });
-        }
-    </script>
 </body>
 </html>
