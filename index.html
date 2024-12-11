@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비트코인 거래 플랫폼 프로젝트</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background: #222;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background: #444;
+            overflow: auto;
+        }
+
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background: #333;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .slide-content {
+            margin-top: 20px;
+            line-height: 1.6em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #aaa;
+        }
+
+        /* 간단한 스크롤 스무딩 */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>비트코인 거래 플랫폼 프로젝트</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#slide1">캔들차트 & 거래량</a></li>
+            <li><a href="#slide2">실시간+인디케이터</a></li>
+            <li><a href="#slide3">확대/축소</a></li>
+            <li><a href="#slide4">드래그</a></li>
+            <li><a href="#slide5">스케일링</a></li>
+            <li><a href="#slide6">토글버튼</a></li>
+            <li><a href="#slide7">타임스탬프</a></li>
+            <li><a href="#slide8">매매 알고리즘 & 자동주문</a></li>
+            <li><a href="#slide9">드로잉 & 더 많은 데이터</a></li>
+        </ul>
+    </nav>
+
+    <section id="slide1">
+        <h2>&lt;Slide&gt; 캔들차트 & 거래량</h2>
+        <div class="slide-content">
+            자바스크립트 라이브러리인 D3.js를 이용하여 CSV 파일로 받은 종가, 시가, 저가, 고가, 날짜 데이터를 캔들차트로 구현하고 거래량 그래프도 추가하였다. 하지만 이 방식은 실시간으로 데이터가 반영되지 않는 한계가 존재.
+        </div>
+    </section>
+
+    <section id="slide2">
+        <h2>&lt;Slide&gt; 실시간+인디케이터</h2>
+        <div class="slide-content">
+            CSV 대신 Binance API에서 JSON 데이터를 받아 웹소켓을 통해 실시간 1분 단위 최신 데이터 갱신을 구현하였다. 캔들차트 및 거래량 그래프를 실시간으로 업데이트하고 RSI, 스토캐스틱 RSI, 이동평균, MACD, 볼린저 밴드 등의 지표를 추가하였다. 그러나 고정된 y축 범위 문제로 지표가 차트 밖으로 튀어나오는 문제가 발생.
+        </div>
+    </section>
+
+    <section id="slide3">
+        <h2>&lt;Slide&gt; 확대, 축소</h2>
+        <div class="slide-content">
+            데이터 개수가 많고 값 변화 폭이 작을 경우 육안으로 구분이 어려워 확대/축소 기능을 추가하였다. 하지만 고정된 y축 범위로 인해 확대해도 미세한 차이 파악이 어려워 스케일링 기능 도입을 고려.
+        </div>
+    </section>
+
+    <section id="slide4">
+        <h2>&lt;Slide&gt; 드래그</h2>
+        <div class="slide-content">
+            확대 시 한 화면에 모든 데이터를 볼 수 없기 때문에 드래그 기능을 추가하여 원하는 시간대로 화면 이동이 가능하도록 구현.
+        </div>
+    </section>
+
+    <section id="slide5">
+        <h2>&lt;Slide&gt; 스케일링</h2>
+        <div class="slide-content">
+            고정된 y축 범위가 문제의 근원이었으므로 표시 중인 데이터의 최댓값, 최솟값에 맞춰 y축 범위를 동적으로 조정하는 스케일링 기능을 추가. 이를 통해 새 데이터가 들어와도 범위가 자동조정되며, 확대 시 미세한 값 차이도 육안으로 확인 가능.
+        </div>
+    </section>
+
+    <section id="slide6">
+        <h2>&lt;Slide&gt; 토글버튼</h2>
+        <div class="slide-content">
+            다양한 지표를 제공하지만 사용자가 모두 필요로 하는 것은 아니다. 각 지표별 토글 버튼을 추가해 필요하지 않은 지표는 숨길 수 있도록 하여 사용자 맞춤형 화면 구성이 가능해졌다.
+        </div>
+    </section>
+
+    <section id="slide7">
+        <h2>&lt;Slide&gt; 타임스탬프</h2>
+        <div class="slide-content">
+            사용자 요구에 따라 1분봉, 15분봉, 1일봉 등 다른 시간대 차트를 볼 수 있도록 API와 버튼을 추가했다. 이를 통해 단기/장기 추세를 모두 파악할 수 있다.
+        </div>
+    </section>
+
+    <section id="slide8">
+        <h2>&lt;Slide&gt; 매매 알고리즘 & 자동주문</h2>
+        <div class="slide-content">
+            RSI를 이용한 매매 알고리즘을 자바스크립트로 구현하고, Flask 서버를 통해 웹 브라우저에서 바이낸스 서버로 자동 주문을 넣는 로직을 구현했다. 사용자가 직접 페이지를 보고 있지 않아도 최적 매매 타이밍에 주문이 가능해졌다.
+        </div>
+    </section>
+
+    <section id="slide9">
+        <h2>&lt;Slide&gt; 드로잉 & 더 많은 데이터 받아오기</h2>
+        <div class="slide-content">
+            드로잉 기능을 구현해 선이나 지점 표시 등을 시도했지만 시간이 지남에 따라 표시가 이상해지는 문제 발생. 또한 1,000개 이상의 데이터(예: 10,000개)를 CSV로 받아 시각화하려 했으나 CPU 부하 증가로 성능 문제가 발생. 이로 인해 드로잉, 대용량 데이터 통합은 실패하였지만, 이를 통해 성능 최적화와 렌더링 기법 개선 필요성을 확인했다.
+        </div>
+    </section>
+
+    <footer>
+        &copy; 비트코인 거래 플랫폼 프로젝트
+    </footer>
+</body>
+</html>
