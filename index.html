@@ -72,9 +72,27 @@
             color: #aaa;
         }
 
-        /* 간단한 스크롤 스무딩 */
         html {
             scroll-behavior: smooth;
+        }
+
+        /* Top 버튼 스타일 */
+        #topBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            display: none; /* 스크롤 내렸을 때만 보이도록 */
+        }
+
+        #topBtn:hover {
+            background: #222;
         }
     </style>
 </head>
@@ -159,8 +177,31 @@
         </div>
     </section>
 
+    <button id="topBtn">Top</button>
+
     <footer>
         &copy; 비트코인 거래 플랫폼 프로젝트
     </footer>
+
+    <script>
+        const topBtn = document.getElementById('topBtn');
+
+        // 스크롤이 일정량 이상 내려가면 top 버튼 표시
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                topBtn.style.display = 'block';
+            } else {
+                topBtn.style.display = 'none';
+            }
+        });
+
+        // 버튼 클릭 시 페이지 상단으로 이동
+        topBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
