@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3.js Drawing with Clear All</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    svg {
+      border: 1px solid #ccc;
+      cursor: crosshair;
+    }
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    button {
+      margin: 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button.active {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button id="draw-mode-btn" class="active">Drawing Mode</button>
+    <button id="brush-mode-btn">Brush Mode</button>
+    <button id="clear-btn">Clear All</button>
+  </div>
+  <svg id="drawing-canvas" width="100vw" height="100vh"></svg>
+
+  <script>
+    const svg = d3.select("#drawing-canvas");
+    const svgNode = svg.node();
+
+    // 상태 변수
+    let mode = "drawing"; // 초기 모드는 "drawing"
+    let isDrawing = false;
+    let currentLine = null;
+    let currentPath = null;
+    let points = [];
+
+    // 크로스헤어 생성
+    const crosshair = {
+      horizontal: svg.append("line")
+        .attr("stroke", "gray")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4"),
+      vertical: svg.append("line")
+        .attr("stroke", "gray")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "4"),
+    };
+
+    // 버튼 선택 및 이벤트 핸들링
+    const drawModeBtn = d3.select("#draw-mode-btn");
+    const brushModeBtn = d3.select("#brush-mode-btn");
+    const clearBtn = d3.select("#clear-btn");
+
+    drawModeBtn.on("click", () => {
+      mode = "drawing";
+      updateButtonState();
+    });
+
+    brushModeBtn.on("click", () => {
+      mode = "brush";
+      updateButtonState();
+    });
+
+    clearBtn.on("click", () => {
+      // SVG 내부 도형 제거 (크로스헤어 제외)
+      svg.selectAll("line:not(.crosshair), path").remove();
+    });
+
+    function updateButtonState() {
+      drawModeBtn.classed("active", mode === "drawing");
+      brushModeBtn.classed("active", mode === "brush");
+    }
+
+    // SVG 이벤트 핸들러
+    svg.on("mousemove", function (event) {
+      const [x, y] = d3.pointer(event, svgNode);
+
+      // 크로스헤어 위치 업데이트
+      crosshair.horizontal
+        .attr("x1", 0)
+        .attr("y1", y)
+        .attr("x2", svgNode.clientWidth)
+        .attr("y2", y);
+
+      crosshair.vertical
+        .attr("x1", x)
+        .attr("y1", 0)
+        .attr("x2", x)
+        .attr("y2", svgNode.clientHeight);
+
+      if (isDrawing) {
+        if (mode === "drawing" && currentLine) {
+          currentLine.attr("x2", x).attr("y2", y);
+        } else if (mode === "brush" && currentPath) {
+          points.push([x, y]);
+          currentPath.attr("d", lineGenerator(points));
+        }
+      }
+    });
+
+    svg.on("mousedown", function (event) {
+      isDrawing = true;
+      const [x, y] = d3.pointer(event, svgNode);
+
+      if (mode === "drawing") {
+        currentLine = svg.append("line")
+          .attr("x1", x)
+          .attr("y1", y)
+          .attr("x2", x)
+          .attr("y2", y)
+          .attr("stroke", "black")
+          .attr("stroke-width", 2);
+      } else if (mode === "brush") {
+        points = [[x, y]];
+        currentPath = svg.append("path")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("stroke-width", 2)
+          .attr("d", `M${x},${y}`);
+      }
+    });
+
+    svg.on("mouseup", function () {
+      isDrawing = false;
+      currentLine = null;
+      currentPath = null;
+      points = [];
+    });
+
+    svg.on("mouseleave", function () {
+      isDrawing = false;
+      currentLine = null;
+      currentPath = null;
+      points = [];
+    });
+
+    // 선 경로 생성기
+    const lineGenerator = d3.line().curve(d3.curveBasis); // 곡선 스타일 설정
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive BTC Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <script>
+        d3.csv("./recent_100_1day_candles.csv").then(data => {
+            const ticker = data.map(d => ({
+                Date: new Date(d.Date),
+                Open: +d.Open,
+                High: +d.High,
+                Low: +d.Low,
+                Close: +d.Close,
+                Volume: +d.Volume
+            }));
+
+            const width = 1200, height = 800;
+            const marginTop = 20, marginRight = 30, marginBottom = 30, marginLeft = 50;
+            const candleHeight = height * 0.7;
+            const volumeHeight = height * 0.3;
+
+            const x = d3.scaleBand()
+                .domain(d3.utcDay.range(ticker.at(0).Date, +ticker.at(-1).Date + 1))
+                .range([marginLeft, width - marginRight])
+                .padding(0.5);
+
+            const y1 = d3.scaleLinear()
+                .domain([d3.min(ticker, d => d.Low), d3.max(ticker, d => d.High)])
+                .range([candleHeight - marginBottom, marginTop]);
+
+            const y2 = d3.scaleLinear()
+                .domain([0, d3.max(ticker, d => d.Volume)])
+                .range([volumeHeight - marginBottom, marginTop]);
+
+            // 캔들스틱 차트 SVG
+            const svgCandle = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", candleHeight);
+
+            // 거래량 차트 SVG (캔들스틱 차트 아래에 위치)
+            const svgVolume = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", volumeHeight)
+                .style("margin-top", "-5px"); // 겹침 최소화
+
+            // 캔들스틱 차트
+            const gCandle = svgCandle.append("g")
+                .selectAll("g").data(ticker).join("g")
+                .attr("transform", d => `translate(${x(d.Date) + x.bandwidth() / 2},0)`);
+
+            gCandle.append("line")
+                .attr("class", "wick")
+                .attr("x1", 0).attr("x2", 0)
+                .attr("y1", d => y1(d.Low))
+                .attr("y2", d => y1(d.High));
+
+            gCandle.append("line")
+                .attr("class", "body")
+                .attr("y1", d => y1(d.Open))
+                .attr("y2", d => y1(d.Close))
+                .attr("stroke-width", x.bandwidth())
+                .attr("stroke", d => d.Open > d.Close ? "blue" : "red");
+
+            svgCandle.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", `translate(0,${candleHeight - marginBottom})`)
+                .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%-m/%-d")));
+
+            svgCandle.append("g")
+                .attr("class", "y-axis-candle")
+                .attr("transform", `translate(${marginLeft},0)`)
+                .call(d3.axisLeft(y1));
+
+            // 거래량 차트
+            svgVolume.append("g")
+                .selectAll("rect").data(ticker).join("rect")
+                .attr("x", d => x(d.Date))
+                .attr("y", d => y2(d.Volume))
+                .attr("height", d => y2(0) - y2(d.Volume))
+                .attr("width", x.bandwidth())
+                .attr("fill", d => d.Open > d.Close ? "blue" : "red");
+
+            svgVolume.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", `translate(0,${volumeHeight - marginBottom})`)
+                .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%-m/%-d")));
+
+            svgVolume.append("g")
+                .attr("class", "y-axis-volume")
+                .attr("transform", `translate(${marginLeft},0)`)
+                .call(d3.axisLeft(y2));
+
+            // 줌 이벤트
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 15])
+                .translateExtent([[0, 0], [width, candleHeight]])
+                .on("zoom", (event) => {
+                    const transform = event.transform;
+                    x.range([marginLeft, width - marginRight].map(d => transform.applyX(d)));
+                    //y1.range([candleHeight - marginBottom, marginTop].map(d => transform.applyY(d)));
+
+                    updateCandleChart();
+                    updateVolumeChart();
+                });
+
+            svgCandle.call(zoom);
+
+            function updateCandleChart() {
+                gCandle.attr("transform", d => `translate(${x(d.Date) + x.bandwidth() / 2},0)`);
+
+                gCandle.selectAll("line.body")
+                    .attr("y1", d => y1(d.Open))
+                    .attr("y2", d => y1(d.Close))
+                    .attr("stroke-width", x.bandwidth())
+                    .attr("stroke", d => d.Open > d.Close ? "blue" : "red");
+
+                gCandle.selectAll("line.wick")
+                    .attr("y1", d => y1(d.Low))
+                    .attr("y2", d => y1(d.High));
+            }
+
+            function updateVolumeChart() {
+                svgVolume.selectAll("rect")
+                    .attr("x", d => x(d.Date))
+                    .attr("width", x.bandwidth());
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time stamp</title>
+</head>
+<body>
+    <div id="controls">
+        <button id="btn1min">1분봉</button>
+        <button id="btn15min">15분봉</button>
+        <button id="btn1day">1일봉</button>
+    </div>
+
+    <!-- iframe을 사용하여 차트를 표시 -->
+    <iframe id="chartFrame" src = "1208_1min + x,y 스케일링 + 토글.html" width="100%" height="800px" style="border: none;"></iframe>
+
+    <script>
+        // 버튼 클릭 이벤트 추가₩₩
+        document.getElementById('btn1min').addEventListener('click', function() {
+            loadChart('1208_1min + x,y 스케일링 + 토글.html');
+        });
+
+        document.getElementById('btn15min').addEventListener('click', function() {
+            loadChart('1208_15min + x,y 스케일링 + 토글 + 알고리즘.html'); // 15분봉 차트 파일
+        });
+
+        document.getElementById('btn1day').addEventListener('click', function() {
+            loadChart('1208_1day + x,y 스케일링 + 토글.html'); // 1일봉 차트 파일
+        });
+
+        // 특정 HTML 파일을 iframe에 로드하는 함수
+        function loadChart(fileName) {
+            document.getElementById('chartFrame').src = fileName;
+        }
+    </script>
+</body>
+</html>

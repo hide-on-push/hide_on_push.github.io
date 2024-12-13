@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비트코인 거래 플랫폼 프로젝트</title>
+    <title>토글버튼</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
             font-family: sans-serif;
@@ -18,6 +19,30 @@
             color: #fff;
             padding: 10px;
             text-align: center;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .slide-content {
+            margin-top: 20px;
+            line-height: 1.6em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #aaa;
         }
 
         nav {
@@ -47,55 +72,25 @@
         nav a:hover {
             background: #333;
         }
-
-        section {
-            max-width: 1200px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        .slide-content {
-            margin-top: 20px;
-            line-height: 1.6em;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #aaa;
-        }
     </style>
 </head>
 <body>
     <header>
         <h1>비트코인 거래 플랫폼 프로젝트</h1>
     </header>
+
     <nav>
         <ul>
-            <li><a href="slide1.html">캔들차트 & 거래량</a></li>
-            <li><a href="slide2.html">실시간+인디케이터</a></li>
-            <li><a href="slide3.html">확대/축소</a></li>
-            <li><a href="slide4.html">드래그</a></li>
-            <li><a href="slide5.html">스케일링</a></li>
-            <li><a href="slide6.html">토글버튼</a></li>
-            <li><a href="slide7.html">타임스탬프</a></li>
-            <li><a href="slide8.html">매매 알고리즘 & 자동주문</a></li>
-            <li><a href="slide9.html">드로잉</a></li>
+            <li><a href="index.html">메인</a></li>
         </ul>
     </nav>
 
     <section>
-        <h2>프로젝트 소개</h2>
+        <h2>토글버튼</h2>
         <div class="slide-content">
-        비트코인 거래 플랫폼 프로젝트에 대한 홈페이지입니다
-    </div>
+            <p>토글버튼을 이용하여 인디테이터를 켜고 끌 수 있게 함</p>
+            <iframe src="6.html" style="width:100%; height:600px; border:none;"></iframe>
+        </div>
     </section>
 
     <footer>
